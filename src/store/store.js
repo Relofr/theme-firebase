@@ -1,16 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
+import db from '../firebase'
+// import { QuerySnapshot } from '@firebase/firestore-types';
 
 Vue.use(Vuex)
-axios.defaults.baseURL = 'http://theme-team-laravel.test/api'
 
 export const store = new Vuex.Store({
   state: {
-    filter: "",
-    themes: [
-      
-    ]
+    loading: true,
+    filter: "all",
+    themes: []
   },
   getters: {
     remaining(state) {
@@ -67,80 +66,94 @@ export const store = new Vuex.Store({
     },
     retreiveThemes(state, themes) {
       state.themes = themes
+    },
+    updateLoading(state, loading) {
+      state.loading = loading
     }
   },
   actions: {
     retreiveThemes(context) {
-      axios.get('/themes')
-        .then(response => {
-          context.commit('retreiveThemes', response.data)
-        })
-        .catch(error => {
-          console.log(error)
+      context.commit('updateLoading', true)
+      db.collection('themes').get()
+        .then(QuerySnapshot => {
+          let tempThemes = []
+          QuerySnapshot.forEach(doc => {
+            console.log(doc.data())
+            const data = {
+              id: doc.id,
+              title: doc.data().title,
+              heroes: doc.data().heroes,
+              completed: doc.data().completed,
+              timestamp: doc.data().timestamp,
+            }
+
+            tempThemes.push(data)
+          })
+
+          context.commit('updateLoading', false)
+          const tempThemesSorted = tempThemes.sort((a, b) => {
+            return a.timestamp.seconds - b.timestamp.seconds
+          })
+
+          context.commit('retreiveThemes', tempThemesSorted)
         })
     },
     addTheme(context, theme) {
-      axios.post('/themes', {
+      db.collection('themes').add({
         title: theme.title,
-        completed: false
+        completed: false,
+        timestamp: new Date(),
       })
-        .then(response => {
-          context.commit('addTheme', response.data)
+      .then(docRef => {
+        context.commit('addTheme', {
+          id: docRef.id,
+          title: theme.title,
+          completed: false
         })
-        .catch(error => {
-          console.log(error)
+      })
+    },
+    deleteTheme(context, id) {
+      db.collection('themes').doc(id).delete()
+        .then(() => {
+          context.commit('deleteTheme', id)
         })
     },
-    clearCompleted(context) {
-      const completed = context.state.themes
-        .filter(theme => theme.completed)
-        .map(theme => theme.id)
-
-      axios.delete('/themesDeleteCompleted', {
-        data: {
-          themes: completed
-        }
+    updateTheme(context, theme) {
+      db.collection('themes').doc(theme.id).set({
+        id: theme.id,
+        title: theme.title,
+        completed: theme.completed,
+        timestamp: new Date()
       })
-        .then(response => {
-          context.commit('clearCompleted')
+      .then(() => {
+        context.commit('updateTheme', theme)
+      })
+    },
+    checkAll(context, checked) {
+      db.collection('themes').get()
+      .then(QuerySnapshot => {
+        QuerySnapshot.forEach(doc => {
+          doc.ref.update({
+            completed: checked,
+          })
+          .then(() => {
+            context.commit('checkAll', checked)
+          })
         })
-        .catch(error => {
-          console.log(error)
-        })
+      })
     },
     updateFilter(context, filter) {
       context.commit('updateFilter', filter)
     },
-    checkAll(context, checked) {
-      axios.patch('/themesCheckAll', {
-        completed: checked,
-      })
-        .then(response => {
-          context.commit('checkAll', checked)
+    clearCompleted(context) {
+      db.collection('themes').where('completed', '==', true).get()
+      .then(QuerySnapshot => {
+        QuerySnapshot.forEach(doc => {
+          doc.ref.delete()
+          .then(() => {
+            context.commit('clearCompleted')
+          })
         })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    deleteTheme(context, id) {
-      axios.delete('/themes/' + id)
-        .then(response => {
-          context.commit('deleteTheme', id)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    updateTheme(context, theme) {
-      axios.patch('/themes/' + theme.id, {
-        title: theme.title,
-        completed: theme.completed
-      })
-        .then(response => {
-          context.commit('updateTheme', response.data)          
-        })
-        .catch(error => {
-          console.log(error)
       })
     }
   }

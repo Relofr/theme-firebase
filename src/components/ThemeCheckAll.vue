@@ -3,7 +3,7 @@
     <form>
       <label>
         <input type="checkbox" class="filled-in" :checked="!anyRemaining" @change="allChecked" />
-        <span>Select All</span>
+        <span class="select-all">Check All</span>
       </label>
     </form>
   </div>
@@ -65,5 +65,9 @@ export default {
     border: 2px solid #4682b4 !important;
     background-color: #4682b4 !important;
     z-index: 0;
+}
+
+.select-all {
+  color: black;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>{{ remaining }} items left</div>
+  <div class="items-remaining">{{ remaining }} items left</div>
 </template>
 
 <script>
@@ -12,3 +12,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.items-remaining {
+  margin-bottom: -20px;
+  color: grey;
+}
+</style>

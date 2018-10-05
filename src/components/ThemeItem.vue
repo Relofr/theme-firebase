@@ -9,7 +9,9 @@
           </label>
         </form>
       <div v-if="!editing" @dblclick="editTheme" class="theme-item-label">{{ title }}</div>
-      <input v-else class="theme-item-edit" type="text" v-model="title" @blur="doneEdit" @keyup.enter="doneEdit" @keyup.esc="cancelEdit" v-focus>
+      <input spellcheck="false" v-else class="theme-item-edit" type="text" v-model="title" @blur="doneEdit" @keyup.enter="doneEdit" @keyup.esc="cancelEdit" v-focus>
+      <!-- <div v-if="!editing" @dblclick="editHeroes" class="theme-item-label">{{ heroes }}</div>
+      <input v-else class="theme-item-edit" type="text" v-model="heroes" @blur="doneEdit" @keyup.enter="doneEdit" @keyup.esc="cancelEdit" v-focus> -->
     </div>
     
     <div @click="removeTheme(theme.id)">
@@ -35,6 +37,7 @@ export default {
     return {
       'id': this.theme.id,
       'title': this.theme.title,
+      'heroes': this.theme.heroes,
       'completed': this.theme.completed,
       'editing': this.theme.editing,
       'beforeEditCache': '',

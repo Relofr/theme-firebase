@@ -1,6 +1,7 @@
 <template>
   <div>
-    <input type="text" class="theme-input" placeholder="Add a theme" v-model="newTheme" @keyup.enter="addTheme" autofocus>
+    <input spellcheck="false" type="text" class="theme-input" placeholder="Add a theme" v-model="newTheme" @keyup.enter="addTheme" autofocus>
+    <!-- <input type="text" class="theme-input" placeholder="Add heroes" v-model="newHero" @keyup.enter="addHero" autofocus> -->
     <div class="extra-container" id='buttons'>
       <theme-filter />
       <div>
@@ -9,6 +10,9 @@
         </transition>
       </div>
     </div>
+
+    <div v-if="$store.state.loading" class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    <!-- <div v-if="$store.state.loading" class="rubick-loader"><img src="../assets/rubickGIF.gif"></div> -->
 
     <transition-group 
       name="fade" 
@@ -180,4 +184,60 @@ input[type=text]:not(.browser-default):focus:not([readonly]) {
   color: black;
   font-size: 22px;
 }
+
+:not(input):not(textarea),
+:not(input):not(textarea)::after,
+:not(input):not(textarea)::before {
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+input, button, textarea, :focus {
+    outline: none;
+}
+
+// .rubick-loader {
+//   margin: auto;
+//   position: relative;
+//   width: 250px;
+// }
+
+
+.lds-ring {
+  display: block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+  margin: auto;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 51px;
+  height: 51px;
+  margin: 6px;
+  border: 6px solid #A52A2A;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #A52A2A transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 </style>
