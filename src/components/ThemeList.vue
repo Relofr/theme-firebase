@@ -57,6 +57,7 @@ export default {
     };
   },
   created() {
+    this.$store.dispatch('initRealTimeListeners')
     this.$store.dispatch('retreiveThemes')
   },
   computed: {

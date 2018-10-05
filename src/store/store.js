@@ -39,6 +39,7 @@ export const store = new Vuex.Store({
         id: theme.id,
         title: theme.title,
         completed: false,
+        timestamp: new Date(),
         editing: false
       })
     },
@@ -53,7 +54,10 @@ export const store = new Vuex.Store({
     },
     deleteTheme(state, id) {
       const index = state.themes.findIndex(item => item.id == id);
-      state.themes.splice(index, 1);
+
+      if (index >= 0) {
+        state.themes.splice(index, 1);
+      }
     },
     updateTheme(state, theme) {
       const index = state.themes.findIndex(item => item.id == theme.id);
@@ -72,6 +76,33 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
+    initRealTimeListeners(context) {
+      db.collection("themes").onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(change => {
+          if (change.type === "added") {
+            const source = change.doc.metadata.hasPendingWrites ? "Local" : "Server";
+
+            if (source == 'Server') {
+              context.commit('addTheme', {
+                id: change.doc.id,
+                title: change.doc.data().title,
+                completed: false
+              })
+            }
+          }
+          if (change.type === "modified") {
+            context.commit('updateTheme', {
+              id: change.doc.id,
+              title: change.doc.data().title,
+              completed: change.doc.data().completed
+            })
+          }
+          if (change.type === "removed") {
+            context.commit('deleteTheme', change.doc.id)
+          }
+        });
+      });
+    },
     retreiveThemes(context) {
       context.commit('updateLoading', true)
       db.collection('themes').get()
@@ -100,17 +131,17 @@ export const store = new Vuex.Store({
     },
     addTheme(context, theme) {
       db.collection('themes').add({
-        title: theme.title,
-        completed: false,
-        timestamp: new Date(),
-      })
-      .then(docRef => {
-        context.commit('addTheme', {
-          id: docRef.id,
           title: theme.title,
-          completed: false
+          completed: false,
+          timestamp: new Date(),
         })
-      })
+        .then(docRef => {
+          context.commit('addTheme', {
+            id: docRef.id,
+            title: theme.title,
+            completed: false
+          })
+        })
     },
     deleteTheme(context, id) {
       db.collection('themes').doc(id).delete()
@@ -120,41 +151,41 @@ export const store = new Vuex.Store({
     },
     updateTheme(context, theme) {
       db.collection('themes').doc(theme.id).set({
-        id: theme.id,
-        title: theme.title,
-        completed: theme.completed,
-        timestamp: new Date()
-      })
-      .then(() => {
-        context.commit('updateTheme', theme)
-      })
+          id: theme.id,
+          title: theme.title,
+          completed: theme.completed,
+          // timestamp: theme.timestamp
+        }, { merge: true })
+        .then(() => {
+          context.commit('updateTheme', theme)
+        })
     },
     checkAll(context, checked) {
       db.collection('themes').get()
-      .then(QuerySnapshot => {
-        QuerySnapshot.forEach(doc => {
-          doc.ref.update({
-            completed: checked,
-          })
-          .then(() => {
-            context.commit('checkAll', checked)
+        .then(QuerySnapshot => {
+          QuerySnapshot.forEach(doc => {
+            doc.ref.update({
+                completed: checked,
+              })
+              .then(() => {
+                context.commit('checkAll', checked)
+              })
           })
         })
-      })
     },
     updateFilter(context, filter) {
       context.commit('updateFilter', filter)
     },
     clearCompleted(context) {
       db.collection('themes').where('completed', '==', true).get()
-      .then(QuerySnapshot => {
-        QuerySnapshot.forEach(doc => {
-          doc.ref.delete()
-          .then(() => {
-            context.commit('clearCompleted')
+        .then(QuerySnapshot => {
+          QuerySnapshot.forEach(doc => {
+            doc.ref.delete()
+              .then(() => {
+                context.commit('clearCompleted')
+              })
           })
         })
-      })
     }
   }
 })
