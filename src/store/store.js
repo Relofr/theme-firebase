@@ -39,6 +39,7 @@ export const store = new Vuex.Store({
         title: theme.title,
         heroes: theme.heroes,
         completed: false,
+        timestamp: new Date(),
         editing: false
       })
     },
@@ -53,7 +54,10 @@ export const store = new Vuex.Store({
     },
     deleteTheme(state, id) {
       const index = state.themes.findIndex(item => item.id == id);
-      state.themes.splice(index, 1);
+
+      if (index >= 0) {
+        state.themes.splice(index, 1);
+      }
     },
     updateTheme(state, theme) {
       const index = state.themes.findIndex(item => item.id == theme.id);
@@ -81,6 +85,33 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
+    initRealTimeListeners(context) {
+      db.collection("themes").onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(change => {
+          if (change.type === "added") {
+            const source = change.doc.metadata.hasPendingWrites ? "Local" : "Server";
+
+            if (source == 'Server') {
+              context.commit('addTheme', {
+                id: change.doc.id,
+                title: change.doc.data().title,
+                completed: false
+              })
+            }
+          }
+          if (change.type === "modified") {
+            context.commit('updateTheme', {
+              id: change.doc.id,
+              title: change.doc.data().title,
+              completed: change.doc.data().completed
+            })
+          }
+          if (change.type === "removed") {
+            context.commit('deleteTheme', change.doc.id)
+          }
+        });
+      });
+    },
     retreiveThemes(context) {
       context.commit('updateLoading', true)
       db.collection('themes').get()
@@ -121,7 +152,6 @@ export const store = new Vuex.Store({
           heroes: theme.heroes,
           completed: false
         })
-      })
     },
     deleteTheme(context, id) {
       db.collection('themes').doc(id).delete()
@@ -143,30 +173,30 @@ export const store = new Vuex.Store({
     },
     checkAll(context, checked) {
       db.collection('themes').get()
-      .then(QuerySnapshot => {
-        QuerySnapshot.forEach(doc => {
-          doc.ref.update({
-            completed: checked,
-          })
-          .then(() => {
-            context.commit('checkAll', checked)
+        .then(QuerySnapshot => {
+          QuerySnapshot.forEach(doc => {
+            doc.ref.update({
+                completed: checked,
+              })
+              .then(() => {
+                context.commit('checkAll', checked)
+              })
           })
         })
-      })
     },
     updateFilter(context, filter) {
       context.commit('updateFilter', filter)
     },
     clearCompleted(context) {
       db.collection('themes').where('completed', '==', true).get()
-      .then(QuerySnapshot => {
-        QuerySnapshot.forEach(doc => {
-          doc.ref.delete()
-          .then(() => {
-            context.commit('clearCompleted')
+        .then(QuerySnapshot => {
+          QuerySnapshot.forEach(doc => {
+            doc.ref.delete()
+              .then(() => {
+                context.commit('clearCompleted')
+              })
           })
         })
-      })
     }
   }
 })

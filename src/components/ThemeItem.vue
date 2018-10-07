@@ -48,6 +48,10 @@ export default {
   watch: {
     checkAll() {
       this.completed = this.checkAll ? true : this.theme.completed
+    },
+    theme() {
+      this.title = this.theme.title,
+      this.completed = this.theme.completed
     }
   },
   directives: {
