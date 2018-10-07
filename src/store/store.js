@@ -152,7 +152,8 @@ export const store = new Vuex.Store({
           heroes: theme.heroes,
           completed: false
         })
-    },
+      }
+    )},
     deleteTheme(context, id) {
       db.collection('themes').doc(id).delete()
         .then(() => {

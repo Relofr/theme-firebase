@@ -1,13 +1,9 @@
 <template>
   <div id="app">
     <ul class="nav">
-      <li><router-link :to="{ name: 'Home' }">Home</router-link></li>
       <li><router-link :to="{ name: 'Themes' }">App</router-link></li>
-      <li><router-link :to="{ name: 'About' }">About</router-link></li>
       <li><router-link :to="{ name: 'Login' }">Login</router-link></li>
-      <li><router-link :to="{ name: 'Register' }">Register</router-link></li>
     </ul>
-    
     <router-view></router-view>
     
   </div>
