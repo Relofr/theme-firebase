@@ -1,7 +1,26 @@
 <template>
   <div>
-    <input spellcheck="false" type="text" class="theme-input" placeholder="Add a theme" v-model="newTheme" @keyup.enter="addTheme" autofocus>
-    <!-- <input type="text" class="theme-input" placeholder="Add heroes" v-model="newHero" @keyup.enter="addHero" autofocus> -->
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s3">
+          <input spellcheck="false" type="text" class="theme-input validate" placeholder="Theme Title..." v-model="newTheme" required>
+        </div>
+        <div class="input-field col s6">
+          <input data-error="wrong" spellcheck="false" type="text" class="theme-input validate" placeholder="Heroes..." v-model="newHeroes" required>
+        </div>
+        <div class="col s3">
+          <a id="add-theme-btn" class="waves-effect waves-light btn" 
+            @click="addTheme">
+            Add Theme
+          </a>
+        </div>
+      </div>
+    </form>
+
+
+
+
+    <!-- <input spellcheck="false" class="theme-input" type="text" placeholder="search..." v-model="search"> -->
     <div class="extra-container" id='buttons'>
       <theme-filter />
       <div>
@@ -12,7 +31,6 @@
     </div>
 
     <div v-if="$store.state.loading" class="lds-ring"><div></div><div></div><div></div><div></div></div>
-    <!-- <div v-if="$store.state.loading" class="rubick-loader"><img src="../assets/rubickGIF.gif"></div> -->
 
     <transition-group 
       name="fade" 
@@ -52,7 +70,9 @@ export default {
   },
   data() {
     return {
+      search: '',
       newTheme: "",
+      newHeroes: "",
       idForTheme: 3,
     };
   },
@@ -76,9 +96,11 @@ export default {
       this.$store.dispatch('addTheme', {
         id: this.idForTheme,
         title: this.newTheme,
+        heroes: this.newHeroes
       })
 
       this.newTheme = "";
+      this.newHeroes = "";
       this.idForTheme++;
     }
   }
@@ -88,6 +110,7 @@ export default {
 <style lang="scss">
 .theme-input {
   width: 100%;
+  margin-bottom: 30px !important;
 }
 ::placeholder {
   color: #cccccc;
@@ -110,6 +133,14 @@ export default {
 }
 .theme-item-label {
   padding: 10px;
+  margin-left: 12px;
+  font-size: 16px;
+}
+.theme-item-label-title {
+  background-color: #2c3e50;
+  border-radius: 50px;
+  color: #fff;
+  padding: 5px 15px;
   margin-left: 12px;
   font-size: 16px;
 }
@@ -202,7 +233,6 @@ input, button, textarea, :focus {
 //   width: 250px;
 // }
 
-
 .lds-ring {
   display: block;
   position: relative;
@@ -240,4 +270,7 @@ input, button, textarea, :focus {
   }
 }
 
+#add-theme-btn {
+  margin-bottom: 20px;
+}
 </style>

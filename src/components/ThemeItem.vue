@@ -8,10 +8,11 @@
             <span></span>
           </label>
         </form>
-      <div v-if="!editing" @dblclick="editTheme" class="theme-item-label">{{ title }}</div>
+      <div v-if="!editing" @dblclick="editTheme" class="theme-item-label-title">{{ title }}</div>
       <input spellcheck="false" v-else class="theme-item-edit" type="text" v-model="title" @blur="doneEdit" @keyup.enter="doneEdit" @keyup.esc="cancelEdit" v-focus>
-      <!-- <div v-if="!editing" @dblclick="editHeroes" class="theme-item-label">{{ heroes }}</div>
-      <input v-else class="theme-item-edit" type="text" v-model="heroes" @blur="doneEdit" @keyup.enter="doneEdit" @keyup.esc="cancelEdit" v-focus> -->
+
+      <div v-if="!editingHeros" @dblclick="editHeroes" class="theme-item-label">{{ heroes }}</div>
+      <input v-else class="theme-item-edit" type="text" v-model="heroes" @blur="doneEditHeros" @keyup.enter="doneEditHeros" @keyup.esc="cancelHeroesEdit" v-focus>
     </div>
     
     <div @click="removeTheme(theme.id)">
@@ -40,6 +41,7 @@ export default {
       'heroes': this.theme.heroes,
       'completed': this.theme.completed,
       'editing': this.theme.editing,
+      'editingHeros': this.theme.editingHeros,
       'beforeEditCache': '',
     }
   },
@@ -63,6 +65,10 @@ export default {
       this.beforeEditCache = this.title
       this.editing = true
     },
+    editHeroes() {
+      this.beforeEditCache = this.heroes
+      this.editingHero = true
+    },
     doneEdit() {
       if (this.title.trim() == '') {
         this.title = this.beforeEditCache
@@ -71,14 +77,32 @@ export default {
       this.$store.dispatch('updateTheme', {
         'id': this.id,
         'title': this.title,
+        'heroes': this.heroes,
         'completed': this.completed,
         'editing': this.editing
+      })
+    },
+    doneEditHeros() {
+      if (this.heroes.trim() == '') {
+        this.heroes = this.beforeEditCache
+      }
+      this.editingHeros = false
+      this.$store.dispatch('updateHeroes', {
+        'id': this.id,
+        'title': this.title,
+        'heroes': this.heroes,
+        'completed': this.completed,
+        'editingHeros': this.editingHeros
       })
     },
     cancelEdit() {
       this.title = this.beforeEditCache
       this.editing = false
     },
+    cancelHeroesEdit() {
+      this.heroes = this.beforeEditCache
+      this.editingHeros = false
+    }
   }
 }
 </script>

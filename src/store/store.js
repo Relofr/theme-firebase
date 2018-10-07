@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import db from '../firebase'
-// import { QuerySnapshot } from '@firebase/firestore-types';
 
 Vue.use(Vuex)
 
@@ -38,6 +37,7 @@ export const store = new Vuex.Store({
       state.themes.push({
         id: theme.id,
         title: theme.title,
+        heroes: theme.heroes,
         completed: false,
         editing: false
       })
@@ -63,6 +63,15 @@ export const store = new Vuex.Store({
         'completed': theme.completed,
         'editing': theme.editing
       });
+    },
+    updateHeroes(state, theme) {
+      const index = state.themes.findIndex(item => item.id ==theme.id);
+      state.themes.splice(index, 1, {
+        'id': theme.id,
+        'heroes': theme.heroes,
+        'completed': theme.complted,
+        'doneEditHeros': theme.doneEditHeros
+      })
     },
     retreiveThemes(state, themes) {
       state.themes = themes
@@ -101,6 +110,7 @@ export const store = new Vuex.Store({
     addTheme(context, theme) {
       db.collection('themes').add({
         title: theme.title,
+        heroes: theme.heroes,
         completed: false,
         timestamp: new Date(),
       })
@@ -108,6 +118,7 @@ export const store = new Vuex.Store({
         context.commit('addTheme', {
           id: docRef.id,
           title: theme.title,
+          heroes: theme.heroes,
           completed: false
         })
       })
@@ -122,6 +133,7 @@ export const store = new Vuex.Store({
       db.collection('themes').doc(theme.id).set({
         id: theme.id,
         title: theme.title,
+        heroes: theme.heroes,
         completed: theme.completed,
         timestamp: new Date()
       })
