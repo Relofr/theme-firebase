@@ -5,15 +5,17 @@
         <div class="input-field col s3">
           <input spellcheck="false" type="text" class="theme-input validate" placeholder="Theme Title..." v-model="newTheme" required>
         </div>
-        <div class="input-field col s6">
+        <div class="input-field col s7">
           <input data-error="wrong" spellcheck="false" type="text" class="theme-input validate" placeholder="Heroes..." v-model="newHeroes" required>
         </div>
-        <div class="col s3">
-          <a id="add-theme-btn" class="waves-effect waves-light btn" 
-            @click="addTheme">
-            Add Theme
-          </a>
-        </div>
+        <transition name="fade">
+          <div class="col s2" >
+            <a :disabled="newTheme && newHeroes == ''" id="add-theme-btn" class="waves-effect waves-light btn" 
+              @click="addTheme">
+              Add Theme
+            </a>
+          </div>
+        </transition>
       </div>
     </form>
 
@@ -111,7 +113,7 @@ export default {
 <style lang="scss">
 .theme-input {
   width: 100%;
-  margin-bottom: 30px !important;
+  // margin-bottom: 30px !important;
 }
 ::placeholder {
   color: #cccccc;
@@ -144,6 +146,7 @@ export default {
   padding: 5px 15px;
   margin-left: 12px;
   font-size: 16px;
+  margin: 2px 0px 4px 10px;
 }
 .theme-item-edit {
   font-size: 24px;
@@ -272,6 +275,13 @@ input, button, textarea, :focus {
 }
 
 #add-theme-btn {
-  margin-bottom: 20px;
+  margin: 6px auto;
+  width: 100%;
+}
+
+#add-theme-btn[disabled] {
+  background:#F0F0F0 !important;
+  border: 1px solid grey !important;
+  color: darkgrey !important;
 }
 </style>
