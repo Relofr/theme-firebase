@@ -14,7 +14,7 @@
           <input type="password" id="password" v-model="password">
           <label for="password">Password</label>
         </div>
-        <button v-on:click="login" class="btn btn-large grey lighten-4 black-text">Login</button>
+        <button v-on:click="login" class="btn" id="login-btn">Login</button>
       </form>
     </div>
   </div>
@@ -49,12 +49,41 @@ export default {
 }
 </script>
 
-<style>
+<style lang='scss'>
 body {
   background-color: #2a3a4a;
 }
 .card-panel {
   width: 500px;
   margin: 0 auto;
+}
+
+input, label, i {
+   -webkit-touch-callout: none;
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+#login-btn {
+  border: 1px solid #4682b4;
+  border-radius: 50px;
+  background-color: transparent;
+  color: #4682b4;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  margin-right: 10px;
+  &:focus {
+    background-color: #4682b4;
+    color: #fff;
+    box-shadow: none;
+  }
+  &:hover {
+    background-color: #4682b4;
+    color: #fff;
+    box-shadow: none;
+  }
 }
 </style>

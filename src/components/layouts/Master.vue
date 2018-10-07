@@ -7,7 +7,7 @@
         <li v-if="isLoggedIn"><router-link :to="{ name: 'Themes' }">App</router-link></li>
         <li v-if="!isLoggedIn"><router-link :to="{ name: 'Login' }">Login</router-link></li>
         <li v-if="!isLoggedIn"><router-link :to="{ name: 'Register' }">Register</router-link></li>
-        <li v-if="isLoggedIn"><button v-on:click="logout" class="btn" id="logout-btn">Logout</button></li>
+        <li v-if="isLoggedIn"><button v-on:click="logout" class="btn" id="logout-btn">LOGOUT</button></li>
         </ul>
       </div>
     </nav>
@@ -71,8 +71,8 @@ export default {
     box-shadow: none;
   }
   &:hover {
-    background-color: #4682b4;
-    color: #fff;
+    background-color: #FFF;
+    color: #A52A2A;
     box-shadow: none;
   }
 }
