@@ -8,4 +8,8 @@ edit themes,
 mark themes completed,
 filter themes based on all, active and completed
 
-TODO: Pagination, search bar, add a home screen for guest users to view themes but restrict admin controls.
+TODO: 
+Pagination, 
+search bar,
+add a home screen for guest users to view themes and restrict admin controls,
+edit hero list
