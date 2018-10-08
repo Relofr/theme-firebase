@@ -26,14 +26,14 @@ let router = new Router({
         requiresGuest: true
       }
     },
-    {
-      path: '/register',
-      name: 'Register',
-      component: Register,
-      meta: {
-        requiresGuest: true
-      }
-    }
+    // {
+    //   path: '/register',
+    //   name: 'Register',
+    //   component: Register,
+    //   meta: {
+    //     requiresGuest: true
+    //   }
+    // }
   ]
 });
 

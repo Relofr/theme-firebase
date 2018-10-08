@@ -1,23 +1,12 @@
 <template>
   <div id="app">
-    <!-- <nav id="navbar">
-      <div class="nav-wrapper">
-      <a class="brand-logo"><img id="logo" src="../../assets/dota2.svg"></a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li v-if="isLoggedIn"><router-link :to="{ name: 'Themes' }">App</router-link></li>
-        <li v-if="!isLoggedIn"><router-link :to="{ name: 'Login' }">Login</router-link></li>
-        <li v-if="!isLoggedIn"><router-link :to="{ name: 'Register' }">Register</router-link></li>
-        <li v-if="isLoggedIn"><button v-on:click="logout" class="btn" id="logout-btn">LOGOUT</button></li>
-        </ul>
-      </div>
-    </nav> -->
   <nav id="navbar">
     <div class="nav-wrapper">
       <a class="brand-logo"><img src="../../assets/dota2.svg"></a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li v-if="isLoggedIn"><router-link :to="{ name: 'Themes' }">App</router-link></li>
         <li v-if="!isLoggedIn"><router-link :to="{ name: 'Login' }">Login</router-link></li>
-        <li v-if="!isLoggedIn"><router-link :to="{ name: 'Register' }">Register</router-link></li>
+        <!-- <li v-if="!isLoggedIn"><router-link :to="{ name: 'Register' }">Register</router-link></li> -->
         <li v-if="isLoggedIn"><button v-on:click="logout" class="btn" id="logout-btn">LOGOUT</button></li>
       </ul>
     </div>
