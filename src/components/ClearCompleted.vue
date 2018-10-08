@@ -1,10 +1,24 @@
 <template>
-  <a class="waves-effect waves-light clear-btn" v-if="showClearCompletedButton" @click="clearCompleted">Clear Completed</a>
+  <div>
+    <!-- <a class="waves-effect waves-light clear-btn" v-if="showClearCompletedButton" @click="clearCompleted">Clear Completed</a> -->
+    <a class="waves-effect waves-light clear-btn" v-if="showClearCompletedButton" id="show-modal" v-on:click="showModal = true">Clear Completed</a>
+    <modal v-if="showModal" v-on:close="showModal = false">
+    <span slot="header">Are you sure?</span>
+  </modal>
+  </div>
 </template>
 
 <script>
+import modal from './modal'
+
 export default {
   name: 'theme-clear-completed',
+  data() {
+    return {
+      showModal: false
+    }
+  },
+  components: { modal },
   computed: {
     showClearCompletedButton() {
       return this.$store.getters.showClearCompletedButton
