@@ -1,24 +1,25 @@
 <template>
-<div class="row">
-  <div class="col s12 m8 offset-m2">
-    <div class="login card-panel black-text center">
-      <h3>Login</h3>
-      <form>
-        <div class="input-field">
-          <i class="material-icons prefix">email</i>
-          <input type="text" id="email" v-model="email">
-          <label for="email">Email</label>
+  <div class="login">
+    <div class="login-screen">
+      <div class="app-title">
+        <h1>Login</h1>
+      </div>
+
+      <div class="login-form">
+        <div class="control-group">
+        <input type="text" class="login-field" value="" placeholder="Email" id="login-name" v-model="email">
+        <label class="login-field-icon fui-user" for="login-name"></label>
         </div>
-        <div class="input-field">
-          <i class="material-icons prefix">lock</i>
-          <input type="password" id="password" v-model="password">
-          <label for="password">Password</label>
+
+        <div class="control-group">
+        <input type="password" class="login-field" value="" placeholder="Password" id="login-pass" v-model="password">
+        <label class="login-field-icon fui-lock" for="login-pass"></label>
         </div>
-        <button v-on:click="login" class="btn" id="login-btn">Login</button>
-      </form>
+
+        <a v-on:click="login" class="btn" id="login-btn">login</a>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -53,10 +54,6 @@ export default {
 body {
   background-color: #2a3a4a;
 }
-.card-panel {
-  width: 500px;
-  margin: 0 auto;
-}
 
 input, label, i {
    -webkit-touch-callout: none;
@@ -74,7 +71,13 @@ input, label, i {
   color: #4682b4;
   -webkit-box-shadow: none;
   box-shadow: none;
-  margin-right: 10px;
+  font-size: 21px;
+  display: block;
+  width: 250px;
+  line-height: 45px;
+  height: 50px;
+  margin: 0 auto;
+  margin-top: 40px;
   &:focus {
     background-color: #4682b4;
     color: #fff;
@@ -85,5 +88,59 @@ input, label, i {
     color: #fff;
     box-shadow: none;
   }
+}
+
+.login {
+margin: 20px auto;
+width: 400px;
+}
+.login-screen {
+  background-color: #FFF;
+  padding: 1px 50px 55px 50px;
+  border-radius: 5px
+}
+
+.app-title {
+text-align: center;
+color: #777;
+}
+
+.login-form {
+text-align: left;
+}
+.control-group {
+margin-bottom: 10px;
+}
+
+input {
+text-align: left;
+background-color: #ECF0F1;
+border: 2px solid transparent;
+border-radius: 3px;
+font-size: 16px;
+font-weight: 200;
+padding: 10px 0;
+width: 250px;
+transition: border .5s;
+}
+
+input:focus {
+border: 2px solid #3498DB;
+box-shadow: none;
+}
+
+.login-link {
+  font-size: 12px;
+  color: #444;
+  display: block;
+	margin-top: 12px;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly]), 
+input[type=password]:not(.browser-default):focus:not([readonly]) {
+  border-bottom: 1px solid #4682b4;
+  -webkit-box-shadow: 0 1px 0 0 #4682b4;
+  box-shadow: 0 1px 0 0 #4682b4;
+  color: black;
 }
 </style>
