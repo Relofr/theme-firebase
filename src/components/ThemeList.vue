@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     addTheme() {
-      if (this.newTheme.trim().length == 0) {
+      if (this.newTheme.trim().length && this.newHeroes.trim() == 0) {
         return;
       }
 
@@ -113,7 +113,6 @@ export default {
 <style lang="scss">
 .theme-input {
   width: 100%;
-  // margin-bottom: 30px !important;
 }
 ::placeholder {
   color: #cccccc;

@@ -43,6 +43,16 @@ export const store = new Vuex.Store({
         editing: false
       })
     },
+    addHeroes(state, theme) {
+      state.themes.push({
+        id: theme.id,
+        title: theme.title,
+        heroes: theme.heroes,
+        completed: false,
+        timestamp: new Date(),
+        editing: false
+      })
+    },
     clearCompleted(state) {
       state.themes = state.themes.filter(theme => !theme.completed);
     },
@@ -95,6 +105,7 @@ export const store = new Vuex.Store({
               context.commit('addTheme', {
                 id: change.doc.id,
                 title: change.doc.data().title,
+                heroes: change.doc.data().heroes,
                 completed: false
               })
             }
@@ -103,6 +114,7 @@ export const store = new Vuex.Store({
             context.commit('updateTheme', {
               id: change.doc.id,
               title: change.doc.data().title,
+              heroes: change.doc.data().heroes,
               completed: change.doc.data().completed
             })
           }
