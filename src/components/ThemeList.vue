@@ -147,6 +147,16 @@ export default {
   font-size: 16px;
   margin: 2px 0px 4px 10px;
 }
+@media screen and (min-width: 601px) {
+  .theme-item-label-title {
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .theme-item-label-title {
+    font-size: 16px;
+  }
+}
 .theme-item-edit {
   font-size: 24px;
   color: #2c3e50;

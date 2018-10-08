@@ -1,5 +1,5 @@
 <template>
-  <a class="waves-effect waves-light clear-btn" v-if="showClearCompletedButton" @click="clearCompleted">Clear Completed Themes</a>
+  <a class="waves-effect waves-light clear-btn" v-if="showClearCompletedButton" @click="clearCompleted">Clear Completed</a>
 </template>
 
 <script>

@@ -57,6 +57,7 @@ export default {
 <style lang='scss'>
 .nav-wrapper {
   background-color: #A52A2A;
+  min-width: 545px;
 }
 #navbar {
   margin-bottom: 1em;

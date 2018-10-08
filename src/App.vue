@@ -32,7 +32,7 @@ body {
 }
 
 .container {
-  min-width: 600px;
+  min-width: 545px;
   margin: 0 auto;
   background: #fff;
   padding: 1em;
