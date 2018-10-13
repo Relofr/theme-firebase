@@ -14,6 +14,20 @@
       <div v-if="!editingHeros" @dblclick="editHeroes" class="theme-item-label">{{ heroes }}</div>
       <input v-else class="theme-item-edit" type="text" v-model="heroes" @blur="doneEditHeros" @keyup.enter="doneEditHeros" @keyup.esc="cancelHeroesEdit" v-focus>
     </div>
+    <div>
+      <span>Wins: {{ wins }}</span>
+      <!-- <button v-on:click="addWins"></button> -->
+      <i id="counterButtons" v-on:click="addWins" class="material-icons">add</i>
+      <i id="counterButtons" v-on:click="subtractWins" class="material-icons">remove</i>
+    </div>
+    <div>
+      <span>Loss: {{ loss }}</span>
+      <i id="counterButtons" v-on:click="addLoss" class="material-icons">add</i>
+      <i id="counterButtons" v-on:click="subtractLoss" class="material-icons">remove</i>
+    </div>
+    <div>
+      <span>Winrate: {{ 0 || winrate().toFixed(0) }}%</span>
+    </div>
     
     <div @click="removeTheme(theme.id)">
       <img src="../assets/delete.svg" class="delete-icon">
@@ -36,6 +50,9 @@ export default {
   },
   data() {
     return {
+      wins: 0,
+      loss: 0,
+      // winrate: 0,
       'id': this.theme.id,
       'title': this.theme.title,
       'heroes': this.theme.heroes,
@@ -62,6 +79,23 @@ export default {
     }
   },
   methods: {
+    winrate() {
+      let totalgames = ''
+      totalgames = this.wins + this.loss
+      return this.wins / totalgames * 100
+    },
+    addWins() {
+      this.wins++
+    },
+    subtractWins() {
+      this.wins--
+    },
+    addLoss() {
+      this.loss++
+    },
+    subtractLoss() {
+      this.loss--
+    },
     removeTheme(id) {
       this.$store.dispatch('deleteTheme', id)
     },
@@ -107,6 +141,9 @@ export default {
       this.heroes = this.beforeEditCache
       this.editingHeros = false
     }
+  },
+  computed: {
+    
   }
 }
 </script>
@@ -117,6 +154,16 @@ export default {
   cursor: pointer;
   margin-left: 14px;
   display: block;
+}
+
+#counterButtons {
+  background-color: #2a3a4a;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  -webkit-text-fill-color: #fff;
 }
 
 [type="checkbox"]:checked+span:not(.lever):before {

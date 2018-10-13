@@ -4,13 +4,6 @@
       <div class="row">
         <div class="input-field col s3">
           <input spellcheck="false" type="text" class="theme-input validate" placeholder="Theme Title..." v-model="newTheme" required>
-          <form v-on:submit.prevent="getResults(query)">
-            <input spellcheck="false" type="text" class="theme-input validate" placeholder="Search..." v-model="query" required>
-
-          </form>
-          <div v-for="result in results" :key="result">
-            <img v-bind:src="result.links[0].href" />
-          </div>
         </div>
         <div class="input-field col s7">
           <input data-error="wrong" spellcheck="false" type="text" class="theme-input validate" placeholder="Heroes..." v-model="newHeroes" required>
@@ -25,11 +18,7 @@
         </transition>
       </div>
     </form>
-
-
-
-
-    <!-- <input spellcheck="false" class="theme-input" type="text" placeholder="search..." v-model="search"> -->
+    <!-- <input spellcheck="false" class="theme-input" type="text" placeholder="Search..." v-model="search"> -->
     <div class="extra-container" id='buttons'>
       <theme-filter />
       <div>
@@ -80,8 +69,6 @@ export default {
   },
   data() {
     return {
-      query: '',
-      results: '',
       search: '',
       newTheme: "",
       newHeroes: "",
@@ -101,12 +88,6 @@ export default {
     }
   },
   methods: {
-    getResults(query) {
-      axios.get('http://cdn.dota2.com/apps/dota2/images/heroes/' + query + '_sb.png').then( response => {
-        console.log(response.data)
-        this.results = response.data;
-      })
-    },
     addTheme() {
       if (this.newTheme.trim().length && this.newHeroes.trim() == 0) {
         return;
